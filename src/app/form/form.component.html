@@ -1,0 +1,262 @@
+<div class="container">
+  <div class="form-container">
+    <h2 class="text-center mb-4">Personal Information Form</h2>
+    
+    <form [formGroup]="personForm" (ngSubmit)="onSubmit()" class="needs-validation">
+      <!-- Personal Information -->
+      <div class="form-group">
+        <label class="form-label">Full Name:</label>
+        <input type="text" class="form-control" formControlName="fullName">
+        <div *ngIf="personForm.get('fullName')?.invalid && personForm.get('fullName')?.touched" class="error-message">
+          Full Name is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email:</label>
+        <input type="email" class="form-control" formControlName="email">
+        <div *ngIf="personForm.get('email')?.invalid && personForm.get('email')?.touched" class="error-message">
+          Enter a valid email
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Phone Number:</label>
+        <input type="text" class="form-control" formControlName="phone">
+        <div *ngIf="personForm.get('phone')?.invalid && personForm.get('phone')?.touched" class="error-message">
+          <div *ngIf="personForm.get('phone')?.errors?.['required']">Phone number is required</div>
+          <div *ngIf="personForm.get('phone')?.errors?.['pattern']">Enter a valid 10-digit phone number</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">LinkedIn:</label>
+        <input type="text" class="form-control" formControlName="linkedin">
+        <div *ngIf="personForm.get('linkedin')?.invalid && personForm.get('linkedin')?.touched" class="error-message">
+          LinkedIn profile is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Profile Image:</label>
+        <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*">
+        <div *ngIf="personForm.get('profileImage')?.invalid && personForm.get('profileImage')?.touched" class="error-message">
+          Profile image is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Career Objective:</label>
+        <textarea class="form-control" rows="4" formControlName="careerObjective"></textarea>
+        <div *ngIf="personForm.get('careerObjective')?.invalid && personForm.get('careerObjective')?.touched" class="error-message">
+          Career Objective is required
+        </div>
+      </div>
+
+      <!-- Areas of Interest -->
+      <h3 class="section-title">Areas of Interest</h3>
+      <div formArrayName="areasOfInterest">
+        <div *ngFor="let interest of areasOfInterest.controls; let i = index" class="interest-item">
+          <input type="text" class="form-control" [formControlName]="i">
+          <button type="button" class="btn btn-danger btn-sm" (click)="removeAreaOfInterest(i)">Remove</button>
+          <div *ngIf="interest.invalid && interest.touched" class="error-message">
+            This field is required
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-secondary add-button" (click)="addAreaOfInterest()">
+        + Add Area of Interest
+      </button>
+
+      <!-- Education Details -->
+      <h3 class="section-title">Education Details</h3>
+      <div formArrayName="education">
+        <div *ngFor="let edu of education.controls; let i = index" [formGroupName]="i" class="education-card">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Course:</label>
+                <input type="text" class="form-control" formControlName="course">
+                <div *ngIf="edu.get('course')?.invalid && edu.get('course')?.touched" class="error-message">
+                  Course is required
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">College Name:</label>
+                <input type="text" class="form-control" formControlName="collegeName">
+                <div *ngIf="edu.get('collegeName')?.invalid && edu.get('collegeName')?.touched" class="error-message">
+                  College Name is required
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">University Name:</label>
+                <input type="text" class="form-control" formControlName="universityName">
+                <div *ngIf="edu.get('universityName')?.invalid && edu.get('universityName')?.touched" class="error-message">
+                  University Name is required
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">City:</label>
+                <input type="text" class="form-control" formControlName="city">
+                <div *ngIf="edu.get('city')?.invalid && edu.get('city')?.touched" class="error-message">
+                  City is required
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Country:</label>
+                <input type="text" class="form-control" formControlName="country">
+                <div *ngIf="edu.get('country')?.invalid && edu.get('country')?.touched" class="error-message">
+                  Country is required
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Passout Month:</label>
+                <input type="text" class="form-control" formControlName="passoutMonth">
+                <div *ngIf="edu.get('passoutMonth')?.invalid && edu.get('passoutMonth')?.touched" class="error-message">
+                  Passout Month is required
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Passout Year:</label>            
+                <input type="number" class="form-control" formControlName="passoutYear" min="1900" max="2099" placeholder="YYYY">
+                <div *ngIf="edu.get('passoutYear')?.invalid && edu.get('passoutYear')?.touched" class="error-message">
+                  <div *ngIf="edu.get('passoutYear')?.errors?.['required']">Passout Year is required</div>
+                  <div *ngIf="edu.get('passoutYear')?.errors?.['pattern']">Enter a valid 4-digit year</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Select CGPA or Percentage:</label>
+            <div class="radio-group">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" formControlName="scoreType" value="cgpa" (change)="updateLabel(i, 'cgpa')">
+                <label class="form-check-label">CGPA</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" formControlName="scoreType" value="percentage" (change)="updateLabel(i, 'percentage')">
+                <label class="form-check-label">Percentage</label>
+              </div>
+            </div>
+            <div *ngIf="edu.get('scoreType')?.invalid && edu.get('scoreType')?.touched" class="error-message">
+              Please select CGPA or Percentage
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Marks:</label>
+            <input type="text" class="form-control" formControlName="score" placeholder="Enter marks" 
+                   [disabled]="!edu.get('scoreType')?.value">
+            <div *ngIf="edu.get('score')?.invalid && edu.get('score')?.touched" class="error-message">
+              <div *ngIf="edu.get('score')?.errors?.['required']">Score is required</div>
+              <div *ngIf="edu.get('score')?.errors?.['pattern']">Enter a valid number</div>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-danger remove-button" (click)="removeEducation(i)">
+            Remove Education
+          </button>
+        </div>
+      </div>
+      
+      <button type="button" class="btn btn-secondary add-button" (click)="addEducation()">
+        + Add Education
+      </button>
+
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<hr>
+
+<!-- Display Submitted Data -->
+<div *ngIf="submittedData" #content>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  </head>
+  
+  <div style="width: 794px; height: 1123px; margin: 20px auto; padding: 20px; box-sizing: border-box; background-color: white; overflow: hidden; font-family: Calibri, sans-serif;">
+    <!-- Header Section -->
+    <div style="background-color: #00A5C8; color: white; padding: 20px; margin-bottom: 0px; position: relative; height: 150px;">
+      <div style="width: 70%; float: left;">
+        <h2 style="margin: 0;">{{ submittedData.fullName }}</h2>
+        <p style="margin-bottom: 5px;"><i class="fas fa-envelope"></i> {{ submittedData.email }}</p>
+        <p style="margin-bottom: 5px;"><i class="fas fa-phone"></i> {{ submittedData.phone }}</p>
+        <p style="margin-bottom: 5px;">
+          <a [href]="submittedData.linkedin" target="_blank" style="color: white; text-decoration: none;">
+            <i class="fa-brands fa-linkedin"></i>  {{ submittedData.linkedin }}
+          </a>
+        </p>
+      </div>
+
+      <img *ngIf="imagePreview" [src]="imagePreview" alt="Profile Image" style="width: 150px; height: 125px; float: right;">
+    </div>
+
+    <!-- Content Section -->
+    <div style="padding: 10px 20px; width: 100%; margin: auto;">
+      <h3 style="margin-top: 20px;">CAREER OBJECTIVE</h3>
+      <hr style="color: black;">
+      <p>{{ submittedData.careerObjective }}</p>
+
+      <h3>AREAS OF INTEREST</h3>
+      <hr style="color: black;">
+      <ul style="column-count: 2; padding-left: 20px;">
+        <li *ngFor="let interest of submittedData.areasOfInterest">{{ interest }}</li>
+      </ul>
+
+      <h3>EDUCATION</h3>
+      <hr style="color: black;">
+      <div style="margin-bottom: 20px; max-width: 95%;">
+        <div *ngFor="let edu of submittedData.education; let i = index" style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <div>
+            <a href="#" style="color: blue; text-decoration: none;">{{ edu.course }}</a><br>
+            <strong>{{ edu.collegeName }}</strong>,<br> {{ edu.universityName }}<br>
+            {{ edu.city }}, {{ edu.country }}
+          </div>
+          <div style="text-align: center; padding-left: 10px;">
+            <span style="color: blue;">{{ edu.passoutMonth }}-{{ edu.passoutYear }}</span>
+          </div>
+          <div style="text-align: right;">
+            <span *ngIf="edu.score">
+              {{ edu.score }} 
+              <span *ngIf="edu.scoreType">
+                {{ edu.scoreType === 'cgpa' ? 'CGPA' : '%' }}
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Generate PDF Button -->
+  <div *ngIf="submittedData" style="display: flex; justify-content: center; align-items: center; height: 20vh;">
+    <button (click)="generatePdf()" style="padding: 10px 20px; font-size: 16px; background-color: #00A5C8; color: white; border: none; border-radius: 5px; cursor: pointer;">
+      Generate PDF
+    </button>
+  </div>
+

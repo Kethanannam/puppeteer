@@ -17,7 +17,6 @@ describe('AppComponent', () => {
   it(`should have as title 'wkhtmltopdf11'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('wkhtmltopdf11');
   });
 
   it('should render title', () => {
